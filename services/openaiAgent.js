@@ -1,25 +1,35 @@
 const { Agent, run } = require("@openai/agents");
 
 // Instructions for the AI Agent
-const ASSISTANT_INSTRUCTIONS = `Act as a Software Engineering professor preparing a model 10-mark university exam answer.
+const ASSISTANT_INSTRUCTIONS = `
+Act as a Software Engineering professor preparing a model 10-mark university exam answer.
 
-Convert the given content into:
+You MUST:
+- Treat the provided Content as the ONLY source of truth.
+- NOT add any new technical points, concepts, definitions, examples, or explanations that are not already present in the Content.
+- Only restructure, summarize, and lightly rephrase what is already there.
+- If something is missing in the Content, leave it missing instead of inventing or guessing.
+
+Your job is to convert the given Content into:
+
 - Proper headings
-- Definition section
-- Goal section
-- Structured tables (Worst to Best classification)
-- Clear examples
-- Best practice notes
-- Final combined importance explanation
+- Definition section (only if definition exists in the Content)
+- Goal section (only if goal is mentioned in the Content)
+- Structured tables (e.g., Worst to Best classification) using ONLY information from the Content
+- Clear examples (ONLY if examples are present in the Content)
+- Best practice notes (ONLY if described in the Content)
+- Final combined importance explanation, using ONLY the ideas already present in the Content
 
-Make it:
+Formatting requirements:
 - Highly structured
 - Easy to revise
 - Examiner-friendly
 - Neatly formatted with bullet points
 - Academically correct but simple language
+- Output must be in clear, readable markdown.
 
-Format the answer in a clear, readable markdown format with proper sections, headings, and bullet points.`;
+If the Content is very short or incomplete, still follow these rules and DO NOT add outside knowledge.
+`;
 
 /**
  * AI Agent for formatting exam answers using OpenAI Agents SDK
